@@ -461,15 +461,17 @@ uint32_t Sip::Millis() {
 // Generate a 30 bit random number
 uint32_t Sip::Random() {
 	
-  // return ((((uint32_t)rand())&0x7fff)<<15) + ((((uint32_t)rand())&0x7fff));
-  return secureRandom(0x3fffffff);
+  return ((((uint32_t)rand())&0x7fff)<<15) + ((((uint32_t)rand())&0x7fff));
+  //return secureRandom(0x3fffffff);
 }
 
 
 int Sip::SendUdp() {
 	
   Udp.beginPacket(pSipIp, iSipPort);
-  Udp.write(pbuf, strlen(pbuf));
+  //Udp.write(pbuf, strlen(pbuf));
+  int i = 0;
+  while (pbuf[i] != 0) Udp.write((uint8_t)pbuf[i++]);
   Udp.endPacket();
 #ifdef DEBUGLOG
   Serial.printf("\r\n----- send %i bytes -----------------------\r\n%s", strlen(pbuf), pbuf);
